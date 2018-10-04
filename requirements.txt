@@ -10,3 +10,4 @@ idna==2.0
 image==1.5.20
 itsdangerous==0.24
 Jinja2==2.10
+requests	==	2.8.1
