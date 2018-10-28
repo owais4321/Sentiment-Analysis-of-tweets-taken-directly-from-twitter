@@ -156,6 +156,5 @@ def index1():
         return "Positive tweets percentage: {}%".format(100*len(ptweets)/len(tweets))+'<br>'+"Negative tweets percentage: {}%".format(100*len(ntweets)/len(tweets))+'<br>'+"Neutral tweets percentage: {}%".format(100*(len(tweets) - len(ntweets) - len(ptweets))/len(tweets))+'<br>'+"<b>Positive Tweets</b><br>"+temp+"<b>Negative Tweets</b><br>"+temp1
     else:
         return 'no tweet with this text found'
-app.run(debug=True)
 
 
