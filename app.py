@@ -51,47 +51,50 @@ class TwitterClient(object):
         else: 
             return 'negative'
   
-    def get_tweets(self, query, count = 400): 
+    def get_tweets(self, query, count = 1000): 
         ''' 
         Main function to fetch tweets and parse them. 
         '''
         # empty list to store parsed tweets 
         tweets = [] 
-  
-        try: 
-            # call twitter api to fetch tweets 
-            fetched_tweets = self.api.search(q = query, count = count) 
-  
-            # parsing tweets one by one 
-            for tweet in fetched_tweets: 
-                # empty dictionary to store required params of a tweet 
-                parsed_tweet = {} 
-  
-                # saving text of tweet 
-                parsed_tweet['text'] = tweet.text 
-                # saving sentiment of tweet 
-                parsed_tweet['sentiment'] = self.get_tweet_sentiment(tweet.text) 
-  
-                # appending parsed tweet to tweets list 
-                if tweet.retweet_count > 0: 
-                    # if tweet has retweets, ensure that it is appended only once 
-                    if parsed_tweet not in tweets: 
-                        tweets.append(parsed_tweet) 
-                else: 
-                    tweets.append(parsed_tweet) 
-  
-            # return parsed tweets 
-            return tweets 
-  
-        except tweepy.TweepError as e: 
+        for i in range(0,10):
+            try: 
+                # call twitter api to fetch tweets 
+                fetched_tweets = self.api.search(q = query, count = count) 
+      
+                # parsing tweets one by one 
+                for tweet in fetched_tweets:
+                    if tweet not in tweets: 
+                    # empty dictionary to store required params of a tweet 
+                        parsed_tweet = {} 
+          
+                        # saving text of tweet 
+                        parsed_tweet['text'] = tweet.text 
+                        # saving sentiment of tweet 
+                        parsed_tweet['sentiment'] = self.get_tweet_sentiment(tweet.text) 
+          
+                        # appending parsed tweet to tweets list 
+                        if tweet.retweet_count > 0: 
+                            # if tweet has retweets, ensure that it is appended only once 
+                            if parsed_tweet not in tweets: 
+                                tweets.append(parsed_tweet) 
+                        else: 
+                            tweets.append(parsed_tweet) 
+                        
+                            i+=1
+            except tweepy.TweepError as e: 
             # print error (if any) 
-            print("Error : " + str(e)) 
+                print("Error : " + str(e)) 
   
+                # return parsed tweets 
+        return tweets 
+  
+
 def main(): 
     # creating object of TwitterClient Class 
     api = TwitterClient() 
     # calling function to get tweets 
-    tweets = api.get_tweets(query = 'cnn', count = 400)
+    tweets = api.get_tweets(query = 'cnn', count = 1000)
      
   
     # picking positive tweets from tweets 
@@ -131,7 +134,6 @@ def index1():
     api = TwitterClient() 
     # calling function to get tweets 
     q=request.form['i1']
-
     tweets = api.get_tweets(query = q, count = 400)
      
     if len(tweets)>0:
@@ -158,3 +160,4 @@ def index1():
         return 'no tweet with this text found'
 
 
+app.run(debug=True)
