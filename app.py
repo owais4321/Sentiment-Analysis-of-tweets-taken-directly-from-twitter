@@ -159,5 +159,3 @@ def index1():
     else:
         return 'no tweet with this text found'
 
-
-app.run(debug=True)
